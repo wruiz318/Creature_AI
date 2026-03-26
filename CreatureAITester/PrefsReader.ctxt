@@ -1,0 +1,15 @@
+#BlueJ class context
+comment0.target=PrefsReader
+comment1.params=
+comment1.target=void\ readPrefs()
+comment2.params=
+comment2.target=void\ writePrefs()
+comment3.params=
+comment3.target=boolean\ isStopAtRuleBroken()
+comment4.params=stop
+comment4.target=void\ setStopAtRuleBroken(boolean)
+comment5.params=
+comment5.target=boolean\ isValidateRules()
+comment6.params=validate
+comment6.target=void\ setValidateRules(boolean)
+numComments=7

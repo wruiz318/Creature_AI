@@ -1,0 +1,9 @@
+#BlueJ class context
+comment0.target=ValidateRulesButton
+comment1.params=
+comment1.target=ValidateRulesButton()
+comment2.params=
+comment2.target=void\ updateLabel()
+comment3.params=
+comment3.target=void\ onClick()
+numComments=4

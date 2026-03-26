@@ -1,5 +1,6 @@
 import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
 import java.util.List;
+import java.util.TreeMap;
 /**
  * Write a description of class PX_LastName_FirstName_Creature here.
  * 
@@ -9,8 +10,14 @@ import java.util.List;
 public class P7_Ruiz_William_Creature extends Actor {
     int targetX = -1;
     int targetY = -1;
+    TreeMap<String, Integer> nodes = new TreeMap<>();
     public void act() {
         boolean toTreatPossible = true;
+        if (!nodes.containsKey("" + getX() + "x" + getY() +"y")){
+            nodes.put(""+snapToGrid(getX())+"x"+snapToGrid(getY())+"y",1);
+        }else{
+            nodes.put(""+snapToGrid(getX())+"x"+snapToGrid(getY())+"y",nodes.get(""+snapToGrid(getX())+"x"+snapToGrid(getY())+"y") +1);
+        }
         List possibleTreats = this.getObjectsInRange(0,Treat.class);
         for (int i = 1;i<this.getWorld().getWidth();i++){
             possibleTreats = this.getObjectsInRange(i,Treat.class);
@@ -46,7 +53,7 @@ public class P7_Ruiz_William_Creature extends Actor {
            beforeX = this.getX();
            beforeY = this.getY();
            beforeRot = this.getRotation();
-           while (true){
+           /*while (true){
                int rand = Greenfoot.getRandomNumber(4) * 90;
                this.turn(rand);
                this.setLocation(getX()/32*32+16,getY()/32*32+16);
@@ -62,6 +69,12 @@ public class P7_Ruiz_William_Creature extends Actor {
                    this.setRotation(beforeRot);
                }
            }
+           */
+           int upNodeValue = nodes.get(snapToGrid(getX())+"x"+(snapToGrid(getY())-32)+"y");
+           int downNodeValue = nodes.get(snapToGrid(getX())+"x"+(snapToGrid(getY())+32)+"y");
+           int leftNodeValue = nodes.get((snapToGrid(getX())-32)+"x"+(snapToGrid(getY()))+"y");
+           int rightNodeValue = nodes.get((snapToGrid(getX())+32)+"x"+(snapToGrid(getY()))+"y");
+           
         }else if (targetY != -1 && targetX != -1){
             Point point = new Point();
             getWorld().addObject(point,targetX,targetY);
@@ -89,5 +102,14 @@ public class P7_Ruiz_William_Creature extends Actor {
             this.move(2);
             possibleWall = this.getOneIntersectingObject(Wall.class);
         }
+    }
+    public int snapToGrid(int value){
+        return value*32/32 + 16;
+    }
+    public int nodeNameToX(String name){
+        return Integer.parseInt(name.substring(0,name.indexOf("x")));
+    }
+    public int nodeNameToY(String name){
+        return Integer.parseInt(name.substring(name.indexOf("x")+1,name.indexOf("y")));
     }
 }

@@ -13,7 +13,7 @@ public class P7_Ruiz_William_Creature extends Actor {
     TreeMap<String, Integer> nodes = new TreeMap<>();
     public void act() {
         boolean toTreatPossible = true;
-        if (!nodes.containsKey("" + getX() + "x" + getY() +"y")){
+        if (!nodes.containsKey("" + snapToGrid(getX()) + "x" + snapToGrid(getY()) +"y")){
             nodes.put(""+snapToGrid(getX())+"x"+snapToGrid(getY())+"y",1);
         }else{
             nodes.put(""+snapToGrid(getX())+"x"+snapToGrid(getY())+"y",nodes.get(""+snapToGrid(getX())+"x"+snapToGrid(getY())+"y") +1);
@@ -53,7 +53,11 @@ public class P7_Ruiz_William_Creature extends Actor {
            beforeX = this.getX();
            beforeY = this.getY();
            beforeRot = this.getRotation();
-           /*while (true){
+           int upNodeValue = nodes.get(snapToGrid(getX())+"x"+(snapToGrid(getY())-32)+"y");
+           int downNodeValue = nodes.get(snapToGrid(getX())+"x"+(snapToGrid(getY())+32)+"y");
+           int leftNodeValue = nodes.get((snapToGrid(getX())-32)+"x"+(snapToGrid(getY()))+"y");
+           int rightNodeValue = nodes.get((snapToGrid(getX())+32)+"x"+(snapToGrid(getY()))+"y");
+           while (true){
                int rand = Greenfoot.getRandomNumber(4) * 90;
                this.turn(rand);
                this.setLocation(getX()/32*32+16,getY()/32*32+16);
@@ -69,11 +73,6 @@ public class P7_Ruiz_William_Creature extends Actor {
                    this.setRotation(beforeRot);
                }
            }
-           */
-           int upNodeValue = nodes.get(snapToGrid(getX())+"x"+(snapToGrid(getY())-32)+"y");
-           int downNodeValue = nodes.get(snapToGrid(getX())+"x"+(snapToGrid(getY())+32)+"y");
-           int leftNodeValue = nodes.get((snapToGrid(getX())-32)+"x"+(snapToGrid(getY()))+"y");
-           int rightNodeValue = nodes.get((snapToGrid(getX())+32)+"x"+(snapToGrid(getY()))+"y");
            
         }else if (targetY != -1 && targetX != -1){
             Point point = new Point();

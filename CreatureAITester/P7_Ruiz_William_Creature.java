@@ -61,6 +61,7 @@ public class P7_Ruiz_William_Creature extends Actor {
            beforeX = this.getX();
            beforeY = this.getY();
            beforeRot = this.getRotation();
+           
            int upNodeValue = nodes.get(snapToGrid(getX())+"x"+(snapToGrid(getY())-32)+"y");
            int downNodeValue = nodes.get(snapToGrid(getX())+"x"+(snapToGrid(getY())+32)+"y");
            int leftNodeValue = nodes.get((snapToGrid(getX())-32)+"x"+(snapToGrid(getY()))+"y");
@@ -77,7 +78,7 @@ public class P7_Ruiz_William_Creature extends Actor {
            nodeNames.add((snapToGrid(getX())+32)+"x"+(snapToGrid(getY()))+"y");
            ArrayList<Integer> finalNodeValues = new ArrayList<Integer>();
            for (String name : nodeNames){
-               if (getWorld().getObjectsAt(nodeNameToX(name) + 16,nodeNameToY(name) + 16,Wall.class).size() == 0){
+               if (getWorld().getObjectsAt(nodeNameToX(name),nodeNameToY(name),Wall.class).size() == 0){
                    finalNodeValues.add(nodeValues.get(nodeNames.indexOf(name)));
                }else{
                    finalNodeValues.add(-1);
@@ -89,10 +90,11 @@ public class P7_Ruiz_William_Creature extends Actor {
                    lowest = i;
                }
            }
+           
            String targetString;
            targetString = nodeNames.get(finalNodeValues.indexOf(lowest));
-           targetX = nodeNameToX(targetString)+16;
-           targetY = nodeNameToY(targetString)+16;
+           targetX = nodeNameToX(targetString);
+           targetY = nodeNameToY(targetString);
            /*
            while (true){
                int rand = Greenfoot.getRandomNumber(4) * 90;
@@ -122,15 +124,15 @@ public class P7_Ruiz_William_Creature extends Actor {
         }else if (targetY != -1 && targetX != -1){
             Point point = new Point();
             getWorld().addObject(point,targetX,targetY);
-            if (point.playerClose() == null){
-                this.turnTowards(targetX,targetY);
-                this.move(2);
-            }else{
+            if (point.playerClose()){
                 this.setLocation(targetX,targetY);
                 targetY = -1;
                 targetX = -1;
+            }else{
+                this.turnTowards(targetX,targetY);
+                this.move(2);
             }
-            getWorld().removeObject(point);
+            
         }else{
             this.move(2);
             this.targetY = -1;

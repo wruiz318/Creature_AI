@@ -2,6 +2,7 @@
 class.CreatureSpawnPoint.image=ladybug1.png
 class.Eraser.image=eraser.png
 class.P7_Ruiz_William_Creature.image=ladybug1.png
+class.Point.image=house-03.png
 class.Treat.image=Coin.png
 class.Wall.image=wallTile.png
 dependency1.from=MainMenuWorld
@@ -253,5 +254,6 @@ target9.x=0
 target9.y=0
 version=3.0.0
 width=974
+world.lastInstantiated=MainMenuWorld
 xPosition=0
 yPosition=0

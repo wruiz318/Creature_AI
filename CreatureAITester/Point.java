@@ -17,7 +17,7 @@ public class Point extends Actor
     {
         // Add your action code here.
     }
-    public List playerClose(){
-        return getObjectsInRange(2,P7_Ruiz_William_Creature.class);
+    public boolean playerClose(){
+        return getObjectsInRange(2,P7_Ruiz_William_Creature.class).size() == 1;
     }
 }

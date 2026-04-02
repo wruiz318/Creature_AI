@@ -15,7 +15,7 @@ public class Point extends Actor
     int numVisits = 0;
     public void act()
     {
-        // Add your action code here.
+        //
     }
     public boolean playerClose(){
         return getObjectsInRange(2,P7_Ruiz_William_Creature.class).size() == 1;

@@ -13,11 +13,22 @@ public class Point extends Actor
      * the 'Act' or 'Run' button gets pressed in the environment.
      */
     int numVisits = 0;
+    public void Point(){
+        GreenfootImage image = getImage();
+        image.scale(32,32);
+        setImage(image);
+    }
     public void act()
     {
-        //
+        
     }
     public boolean playerClose(){
         return getObjectsInRange(2,P7_Ruiz_William_Creature.class).size() == 1;
+    }
+    public boolean intersectingWall(){
+        return getOneIntersectingObject(Wall.class) != null;
+    }
+    public Actor getWall(){
+        return getOneIntersectingObject(Wall.class);
     }
 }

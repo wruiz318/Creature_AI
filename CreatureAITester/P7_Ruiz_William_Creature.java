@@ -33,6 +33,9 @@ public class P7_Ruiz_William_Creature extends Actor {
                 break;
             }
         }
+        if (possibleTreats.size() == 0){
+            nodes = new TreeMap<>();
+        }
         int beforeX = this.getX();
         int beforeY = this.getY();
         int beforeRot = this.getRotation();
@@ -73,7 +76,7 @@ public class P7_Ruiz_William_Creature extends Actor {
            nodeValues.add(rightNodeValue);
            ArrayList<String> nodeNames = new ArrayList<String>();
            nodeNames.add(snapToGrid(getX())+"x"+snapToGrid(getY()-32)+"y");
-           nodeNames.add(snapToGrid(getX())+"x"+snapToGrid(getY()+32)+"y");
+           nodeNames.add(snapToGrid(getX())+"x"+snapToGrid((getY())+32)+"y");
            nodeNames.add(snapToGrid(getX()-32)+"x"+(snapToGrid(getY()))+"y");
            nodeNames.add(snapToGrid(getX()+32)+"x"+(snapToGrid(getY()))+"y");
            ArrayList<Integer> finalNodeValues = new ArrayList<Integer>();
@@ -135,7 +138,7 @@ public class P7_Ruiz_William_Creature extends Actor {
                 this.move(2);
                 System.out.println(targetX - getX() + ", " + (targetY - getY()));
             }
-            //getWorld().removeObject(point);
+            getWorld().removeObject(point);
         }else{
             this.move(2);
             this.targetY = -1;
@@ -144,6 +147,7 @@ public class P7_Ruiz_William_Creature extends Actor {
         Actor possibleTreat = this.getOneIntersectingObject(Treat.class);
         if (possibleTreat != null){
             this.getWorld().removeObject(possibleTreat);
+            this.setRotation(0);
         }
         Actor possibleWall = this.getOneIntersectingObject(Wall.class);
         while (possibleWall != null){
@@ -158,6 +162,7 @@ public class P7_Ruiz_William_Creature extends Actor {
             }
             possibleWall = this.getOneIntersectingObject(Wall.class);
         }
+        
     }
     public int snapToGrid(int value){
         return value*32/32;

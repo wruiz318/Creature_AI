@@ -12,21 +12,12 @@ public class P7_Ruiz_William_Creature extends Actor {
     TreeMap<String, Integer> nodes = new TreeMap<>();
     public void act() {
         boolean toTreatPossible = true;
+        List possibleTreats = this.getObjectsInRange(0,Treat.class);
         if (!nodes.containsKey("" + snapToGrid(getX()) + "x" + snapToGrid(getY()) +"y")){
             nodes.put(""+snapToGrid(getX())+"x"+snapToGrid(getY())+"y",1);
         }else{
             nodes.put(""+snapToGrid(getX())+"x"+snapToGrid(getY())+"y",nodes.get(""+snapToGrid(getX())+"x"+snapToGrid(getY())+"y") +1);
         }
-        if (!nodes.containsKey(snapToGrid(getX())+"x"+(snapToGrid(getY())-32)+"y")){
-            nodes.put(snapToGrid(getX())+"x"+snapToGrid(getY()-32)+"y",0);
-       }if (!nodes.containsKey(snapToGrid(getX())+"x"+(snapToGrid(getY())+32)+"y")){
-           nodes.put(snapToGrid(getX())+"x"+snapToGrid(getY()+32)+"y",0);
-       }if (!nodes.containsKey((snapToGrid(getX())-32)+"x"+(snapToGrid(getY()))+"y")){
-           nodes.put(snapToGrid(getX()-32)+"x"+(snapToGrid(getY()))+"y",0);
-       }if (!nodes.containsKey((snapToGrid(getX())+32)+"x"+(snapToGrid(getY()))+"y")){
-           nodes.put(snapToGrid(getX()+32)+"x"+(snapToGrid(getY()))+"y",0);
-       }
-        List possibleTreats = this.getObjectsInRange(0,Treat.class);
         for (int i = 1;i<this.getWorld().getWidth();i++){
             possibleTreats = this.getObjectsInRange(i,Treat.class);
             if (possibleTreats.size() > 0){
@@ -61,6 +52,15 @@ public class P7_Ruiz_William_Creature extends Actor {
             }
         }
         if (!toTreatPossible && targetY == -1){
+            if (!nodes.containsKey(snapToGrid(getX())+"x"+snapToGrid(getY()-32)+"y")){
+                nodes.put(snapToGrid(getX())+"x"+snapToGrid(getY()-32)+"y",0);
+           }if (!nodes.containsKey(snapToGrid(getX())+"x"+snapToGrid(getY()+32)+"y")){
+               nodes.put(snapToGrid(getX())+"x"+snapToGrid(getY()+32)+"y",0);
+           }if (!nodes.containsKey(snapToGrid(getX()-32)+"x"+(snapToGrid(getY()))+"y")){
+               nodes.put(snapToGrid(getX()-32)+"x"+(snapToGrid(getY()))+"y",0);
+           }if (!nodes.containsKey(snapToGrid(getX()+32)+"x"+(snapToGrid(getY()))+"y")){
+               nodes.put(snapToGrid(getX()+32)+"x"+(snapToGrid(getY()))+"y",0);
+           }
            beforeX = this.getX();
            beforeY = this.getY();
            beforeRot = this.getRotation();
@@ -81,11 +81,14 @@ public class P7_Ruiz_William_Creature extends Actor {
            nodeNames.add(snapToGrid(getX()+32)+"x"+(snapToGrid(getY()))+"y");
            ArrayList<Integer> finalNodeValues = new ArrayList<Integer>();
            for (String name : nodeNames){
-               if (getWorld().getObjectsAt(nodeNameToX(name),nodeNameToY(name),Wall.class).size() == 0){
+               Point point = new Point();
+               getWorld().addObject(point,nodeNameToX(name),nodeNameToY(name));
+               if (!point.intersectingWall()){
                    finalNodeValues.add(nodeValues.get(nodeNames.indexOf(name)));
                }else{
                    finalNodeValues.add(-1);
                }
+               getWorld().removeObject(point);
            }
            int lowest = finalNodeValues.get(0);
            for (int i : finalNodeValues){
@@ -140,9 +143,7 @@ public class P7_Ruiz_William_Creature extends Actor {
             }
             getWorld().removeObject(point);
         }else{
-            this.move(2);
-            this.targetY = -1;
-            targetX = -1;
+            move(2);
         }
         Actor possibleTreat = this.getOneIntersectingObject(Treat.class);
         if (possibleTreat != null){
@@ -156,21 +157,30 @@ public class P7_Ruiz_William_Creature extends Actor {
             for (int i = 0;i<2;i++){
                 this.move(1);
                 possibleWall = this.getOneIntersectingObject(Wall.class);
-                if (possibleWall  == null){
+                if (possibleWall == null){
                     break;
                 }
             }
             possibleWall = this.getOneIntersectingObject(Wall.class);
         }
-        
     }
     public int snapToGrid(int value){
-        return value*32/32;
+        return value/32*32 + 16;
     }
     public int nodeNameToX(String name){
         return Integer.parseInt(name.substring(0,name.indexOf("x")));
     }
     public int nodeNameToY(String name){
         return Integer.parseInt(name.substring(name.indexOf("x")+1,name.indexOf("y")));
+    }
+    public void showTarget(){
+        Point point = new Point();
+        getWorld().addObject(point,targetX,targetY);
+    }
+    public void setTarget(){
+        setLocation(targetX,targetY);
+    }public void printSize(){
+        Wall wall = new Wall();
+        System.out.println(wall.getImage().getWidth() + "," + wall.getImage().getHeight());
     }
 }

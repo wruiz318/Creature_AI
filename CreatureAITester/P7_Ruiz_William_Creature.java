@@ -17,7 +17,16 @@ public class P7_Ruiz_William_Creature extends Actor {
             nodes.put(""+snapToGrid(getX())+"x"+snapToGrid(getY())+"y",1);
         }else{
             nodes.put(""+snapToGrid(getX())+"x"+snapToGrid(getY())+"y",nodes.get(""+snapToGrid(getX())+"x"+snapToGrid(getY())+"y") +1);
-        }
+        } 
+        if (!nodes.containsKey(snapToGrid(getX())+"x"+snapToGrid(getY()-32)+"y")){
+            nodes.put(snapToGrid(getX())+"x"+snapToGrid(getY()-32)+"y",0);
+       }if (!nodes.containsKey(snapToGrid(getX())+"x"+snapToGrid(getY()+32)+"y")){
+           nodes.put(snapToGrid(getX())+"x"+snapToGrid(getY()+32)+"y",0);
+       }if (!nodes.containsKey(snapToGrid(getX()-32)+"x"+(snapToGrid(getY()))+"y")){
+           nodes.put(snapToGrid(getX()-32)+"x"+(snapToGrid(getY()))+"y",0);
+       }if (!nodes.containsKey(snapToGrid(getX()+32)+"x"+(snapToGrid(getY()))+"y")){
+           nodes.put(snapToGrid(getX()+32)+"x"+(snapToGrid(getY()))+"y",0);
+       }
         for (int i = 1;i<this.getWorld().getWidth();i++){
             possibleTreats = this.getObjectsInRange(i,Treat.class);
             if (possibleTreats.size() > 0){
@@ -52,15 +61,6 @@ public class P7_Ruiz_William_Creature extends Actor {
             }
         }
         if (!toTreatPossible && targetY == -1){
-            if (!nodes.containsKey(snapToGrid(getX())+"x"+snapToGrid(getY()-32)+"y")){
-                nodes.put(snapToGrid(getX())+"x"+snapToGrid(getY()-32)+"y",0);
-           }if (!nodes.containsKey(snapToGrid(getX())+"x"+snapToGrid(getY()+32)+"y")){
-               nodes.put(snapToGrid(getX())+"x"+snapToGrid(getY()+32)+"y",0);
-           }if (!nodes.containsKey(snapToGrid(getX()-32)+"x"+(snapToGrid(getY()))+"y")){
-               nodes.put(snapToGrid(getX()-32)+"x"+(snapToGrid(getY()))+"y",0);
-           }if (!nodes.containsKey(snapToGrid(getX()+32)+"x"+(snapToGrid(getY()))+"y")){
-               nodes.put(snapToGrid(getX()+32)+"x"+(snapToGrid(getY()))+"y",0);
-           }
            beforeX = this.getX();
            beforeY = this.getY();
            beforeRot = this.getRotation();
@@ -101,7 +101,7 @@ public class P7_Ruiz_William_Creature extends Actor {
            targetString = nodeNames.get(finalNodeValues.indexOf(lowest));
            targetX = nodeNameToX(targetString);
            targetY = nodeNameToY(targetString);
-           System.out.println(targetString);
+           //System.out.println(targetString);
            /*
            while (true){
                int rand = Greenfoot.getRandomNumber(4) * 90;
@@ -139,28 +139,35 @@ public class P7_Ruiz_William_Creature extends Actor {
             }else{  
                 this.turnTowards(targetX,targetY);
                 this.move(2);
-                System.out.println(targetX - getX() + ", " + (targetY - getY()));
+                //System.out.println(targetX - getX() + ", " + (targetY - getY()));
             }
             getWorld().removeObject(point);
         }else{
             move(2);
+            setRotation(0);
+            Actor possibleWall = this.getOneIntersectingObject(Wall.class);
+            while (possibleWall != null){
+                this.turnTowards(possibleWall.getX(),possibleWall.getY());
+                this.turn(180);
+                move(2);
+                setRotation(0);
+                System.out.println("HI");
+                possibleWall = this.getOneIntersectingObject(Wall.class);
+            }
         }
         Actor possibleTreat = this.getOneIntersectingObject(Treat.class);
         if (possibleTreat != null){
             this.getWorld().removeObject(possibleTreat);
             this.setRotation(0);
         }
+        setRotation(0);
         Actor possibleWall = this.getOneIntersectingObject(Wall.class);
         while (possibleWall != null){
             this.turnTowards(possibleWall.getX(),possibleWall.getY());
             this.turn(180);
-            for (int i = 0;i<2;i++){
-                this.move(1);
-                possibleWall = this.getOneIntersectingObject(Wall.class);
-                if (possibleWall == null){
-                    break;
-                }
-            }
+            move(2);
+            setRotation(0);
+            System.out.println("HI");
             possibleWall = this.getOneIntersectingObject(Wall.class);
         }
     }

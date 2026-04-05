@@ -6,27 +6,13 @@ import java.util.*;
  * @author (your name) 
  * @version (a version number or a date)
  */
-public class P7_Ruiz_William_Creature extends Actor {
+public class P7_Ruiz_William_Creature_V2 extends Actor {
     int targetX = -1;
     int targetY = -1;
-    TreeMap<String, Integer> nodes = new TreeMap<>();
+    ArrayList<ArrayList<String>> nodes = new ArrayList<>();
     public void act() {
         boolean toTreatPossible = true;
         List possibleTreats = this.getObjectsInRange(0,Treat.class);
-        if (!nodes.containsKey("" + snapToGrid(getX()) + "x" + snapToGrid(getY()) +"y")){
-            nodes.put(""+snapToGrid(getX())+"x"+snapToGrid(getY())+"y",1);
-        }else{
-            nodes.put(""+snapToGrid(getX())+"x"+snapToGrid(getY())+"y",nodes.get(""+snapToGrid(getX())+"x"+snapToGrid(getY())+"y") +1);
-        } 
-        if (!nodes.containsKey(snapToGrid(getX())+"x"+snapToGrid(getY()-32)+"y")){
-            nodes.put(snapToGrid(getX())+"x"+snapToGrid(getY()-32)+"y",0);
-       }if (!nodes.containsKey(snapToGrid(getX())+"x"+snapToGrid(getY()+32)+"y")){
-           nodes.put(snapToGrid(getX())+"x"+snapToGrid(getY()+32)+"y",0);
-       }if (!nodes.containsKey(snapToGrid(getX()-32)+"x"+(snapToGrid(getY()))+"y")){
-           nodes.put(snapToGrid(getX()-32)+"x"+(snapToGrid(getY()))+"y",0);
-       }if (!nodes.containsKey(snapToGrid(getX()+32)+"x"+(snapToGrid(getY()))+"y")){
-           nodes.put(snapToGrid(getX()+32)+"x"+(snapToGrid(getY()))+"y",0);
-       }
         for (int i = 1;i<this.getWorld().getWidth();i++){
             possibleTreats = this.getObjectsInRange(i,Treat.class);
             if (possibleTreats.size() > 0){
@@ -34,7 +20,7 @@ public class P7_Ruiz_William_Creature extends Actor {
             }
         }
         if (possibleTreats.size() == 0){
-            nodes = new TreeMap<>();
+            nodes = new ArrayList<>();
         }
         int beforeX = this.getX();
         int beforeY = this.getY();
@@ -61,73 +47,7 @@ public class P7_Ruiz_William_Creature extends Actor {
             }
         }
         if (!toTreatPossible && targetY == -1){
-           beforeX = this.getX();
-           beforeY = this.getY();
-           beforeRot = this.getRotation();
            
-           int upNodeValue = nodes.get(snapToGrid(getX())+"x"+snapToGrid(getY()-32)+"y");
-           int downNodeValue = nodes.get(snapToGrid(getX())+"x"+snapToGrid(getY()+32)+"y");
-           int leftNodeValue = nodes.get(snapToGrid(getX()-32)+"x"+(snapToGrid(getY()))+"y");
-           int rightNodeValue = nodes.get(snapToGrid(getX()+32)+"x"+(snapToGrid(getY()))+"y");
-           ArrayList<Integer> nodeValues = new ArrayList<Integer>();
-           nodeValues.add(upNodeValue);
-           nodeValues.add(downNodeValue);
-           nodeValues.add(leftNodeValue);
-           nodeValues.add(rightNodeValue);
-           ArrayList<String> nodeNames = new ArrayList<String>();
-           nodeNames.add(snapToGrid(getX())+"x"+snapToGrid(getY()-32)+"y");
-           nodeNames.add(snapToGrid(getX())+"x"+snapToGrid((getY())+32)+"y");
-           nodeNames.add(snapToGrid(getX()-32)+"x"+(snapToGrid(getY()))+"y");
-           nodeNames.add(snapToGrid(getX()+32)+"x"+(snapToGrid(getY()))+"y");
-           ArrayList<Integer> finalNodeValues = new ArrayList<Integer>();
-           for (String name : nodeNames){
-               Point point = new Point();
-               getWorld().addObject(point,nodeNameToX(name),nodeNameToY(name));
-               if (!point.intersectingWall()){
-                   finalNodeValues.add(nodeValues.get(nodeNames.indexOf(name)));
-               }else{
-                   finalNodeValues.add(-1);
-               }
-               getWorld().removeObject(point);
-           }
-           int lowest = finalNodeValues.get(0);
-           for (int i : finalNodeValues){
-               if (lowest == -1 || (lowest > i && i!=-1)){
-                   lowest = i;
-               }
-           }
-           
-           String targetString;
-           targetString = nodeNames.get(finalNodeValues.indexOf(lowest));
-           targetX = nodeNameToX(targetString);
-           targetY = nodeNameToY(targetString);
-           //System.out.println(targetString);
-           /*
-           while (true){
-               int rand = Greenfoot.getRandomNumber(4) * 90;
-               this.turn(rand);
-               this.setLocation(getX()/32*32+16,getY()/32*32+16);
-               for (int i= 0;i<16;i++){
-                   move(2);
-               }
-               if (this.getOneIntersectingObject(Wall.class) == null){
-                   targetY = this.getY()/32*32 + 16;
-                   targetX = this.getX()/32*32 + 16;
-                   this.turn(180);
-                   for (int i= 0;i<16;i++){
-                       move(2);
-                   }
-                   this.setRotation(beforeRot);
-                   break;
-               }else{
-                   this.turn(180);
-                   for (int i= 0;i<16;i++){
-                       move(2);
-                   }
-                   this.setRotation(beforeRot);
-               }
-           }
-           */
         }else if (targetY != -1 && targetX != -1){
             Point point = new Point();
             getWorld().addObject(point,targetX,targetY);
@@ -178,17 +98,14 @@ public class P7_Ruiz_William_Creature extends Actor {
     public int nodeNameToY(String name){
         return Integer.parseInt(name.substring(name.indexOf("x")+1,name.indexOf("y")));
     }
-    public void showTarget(){
-        Point point = new Point();
-        getWorld().addObject(point,targetX,targetY);
-    }
     public void setTarget(){
         setLocation(targetX,targetY);
     }public void printSize(){
         Wall wall = new Wall();
         System.out.println(wall.getImage().getWidth() + "," + wall.getImage().getHeight());
+    }public ArrayList<String> search(){
+        return null;
     }
-    
     public class Point extends Actor
     {
         /**

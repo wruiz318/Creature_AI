@@ -1,0 +1,18 @@
+#BlueJ class context
+comment0.target=P7_Ruiz_William_Creature_V2
+comment0.text=\n\ Write\ a\ description\ of\ class\ PX_LastName_FirstName_Creature\ here.\n\ \n\ @author\ (your\ name)\ \n\ @version\ (a\ version\ number\ or\ a\ date)\n
+comment1.params=
+comment1.target=void\ act()
+comment2.params=value
+comment2.target=int\ snapToGrid(int)
+comment3.params=name
+comment3.target=int\ nodeNameToX(java.lang.String)
+comment4.params=name
+comment4.target=int\ nodeNameToY(java.lang.String)
+comment5.params=
+comment5.target=void\ setTarget()
+comment6.params=
+comment6.target=void\ printSize()
+comment7.params=
+comment7.target=java.util.ArrayList\ search()
+numComments=8

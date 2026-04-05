@@ -151,7 +151,6 @@ public class P7_Ruiz_William_Creature extends Actor {
                 this.turn(180);
                 move(2);
                 setRotation(0);
-                System.out.println("HI");
                 possibleWall = this.getOneIntersectingObject(Wall.class);
             }
         }
@@ -167,7 +166,6 @@ public class P7_Ruiz_William_Creature extends Actor {
             this.turn(180);
             move(2);
             setRotation(0);
-            System.out.println("HI");
             possibleWall = this.getOneIntersectingObject(Wall.class);
         }
     }
